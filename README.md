@@ -1,7 +1,7 @@
 ## To Run
 
 ### Make sure that homebrew is installed
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+` /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" `
 
 ### Ensure that python 3.6.5_1 is installed not python 2.6.7 or 3.7
 * check with ` python --verison `
@@ -18,4 +18,6 @@
 * run ` pip3 install matplotlib `
 * run ` pip3 install sklearn `
 * run ` pip3 install scipy `
+
+### Choose the Program to run
 * run ` make $projectName `
