@@ -7,7 +7,7 @@ b = tf.Variable([1.0], tf.float32)
 x = tf.placeholder(tf.float32)
 
 # Model
-prediction = (10 + m) * x + b
+prediction = (m) * x + b
 
 # Loss
 loss = tf.reduce_sum(tf.square(prediction - y))
