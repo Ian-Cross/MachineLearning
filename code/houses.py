@@ -26,6 +26,8 @@ with tf.Session() as sess:
 
     # Train our model 1000 times on training data
     for i in range(1000):
+        if 1 % 100 == 0:
+          print("Finished " + str(i) + " training rounds.")
         sess.run(train, {x: bedrooms, y: price})
 
     # Print trained values for m and b
