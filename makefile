@@ -22,7 +22,7 @@ scales:
 ## Houses Documentation
 .PHONY : houses
 houses:
-	python3 ./code/houses.py
+	@pipenv run python $(PROJECT_FOLDER)HousePrices/src/housing.py
 
 ## Flower Documentation
 .PHONY : flower

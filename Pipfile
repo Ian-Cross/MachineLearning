@@ -11,6 +11,8 @@ sklearn = "*"
 scipy = "*"
 matplotlib = "*"
 tensorflow = "*"
+seaborn = "*"
+numpy = "*"
 
 [requires]
 python_version = "3.7"
