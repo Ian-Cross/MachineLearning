@@ -2,9 +2,6 @@
 
 Medium Article Tutorial [here](https://medium.com/analytics-vidhya/house-price-prediction-regression-with-tensorflow-keras-4fc49fae7123):
 
-## Learnings
-
-
 ## Header Breakdown
 Longitude:
 * A measure of how far west a house is; a higher value is farther west

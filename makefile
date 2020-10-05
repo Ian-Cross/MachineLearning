@@ -19,7 +19,10 @@ menu: makefile
 scales:
 	python3 ./code/scales.py
 
-## Houses Documentation
+## ** Houses Documentation **
+## Based off of the California censous data of 1990, estimate the value of a house.
+## Using a couple factors: Location (Long, Lat), age of a house, total rooms, total bedrooms, total population, etc.
+##
 .PHONY : houses
 houses:
 	@pipenv run python $(PROJECT_FOLDER)HousePrices/src/housing.py

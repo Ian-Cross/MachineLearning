@@ -25,7 +25,7 @@ def main():
   # show details of and clean up the data
   data_frame = analysis(data_frame)
   # show some basic visualizations about the data
-  visualize(data_frame)
+  # visualize(data_frame)
 
   # break up the testing and training sets
   X = data_frame.drop("median_house_value",axis=1)
