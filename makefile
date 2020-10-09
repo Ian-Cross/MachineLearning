@@ -27,12 +27,7 @@ scales:
 houses:
 	@pipenv run python $(PROJECT_FOLDER)HousePrices/src/housing.py
 
-## Flower Documentation
-.PHONY : flower
-flower:
-	python3 ./code/premade_estimator.py
-
-## Iris Documentation
+## ** Iris Documentation **
 .PHONY : iris
 iris:
-	python3 ./code/iris2.py
+	@pipenv run python $(PROJECT_FOLDER)IrisClassification/iris.py

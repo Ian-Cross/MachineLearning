@@ -22,7 +22,6 @@ import warnings
 
 import iris_data
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--batch_size', default=100, type=int, help='batch size')
 parser.add_argument('--train_steps', default=1000, type=int,
