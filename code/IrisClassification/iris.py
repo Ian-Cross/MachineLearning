@@ -19,7 +19,7 @@ class IrisSpeciesPredictor:
   TESTING_DATA_PATH = "data/iris_test.csv"
   TESTING_DATA_URL = "https://storage.googleapis.com/download.tensorflow.org/data/iris_test.csv"
 
-  # Data Description Contants
+  # Data Description Constants
   CLASS_NAMES = ['Iris setosa', 'Iris versicolor', 'Iris virginica']
   DATA_HEADERS = ["sepal_length","sepal_width","petal_length","petal_width","species"]
   FEATURE_NAMES = DATA_HEADERS[:-1]
@@ -224,7 +224,6 @@ class IrisSpeciesPredictor:
     if (test_score):
       print(tf.stack([y,prediction],axis=1))
 
-
   def predict_model(self):
     predict_dataset = tf.convert_to_tensor([
       [5.1, 3.3, 1.7, 0.5,],
@@ -259,4 +258,3 @@ if __name__ == "__main__":
 
     # Perdiction
     irisSpeciesPredictor.predict_model()
-

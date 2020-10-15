@@ -13,14 +13,11 @@ from sklearn.metrics import mean_squared_error,mean_absolute_error
 
 import os,sys,json
 
-from visualizations import analysis, visualize
+from code.HousePrices.src.visualizations import analysis, visualize
 
 def main():
-  # Change the current working directory to the location of the running file
-  os.chdir(sys.path[0])
-
   # Import and view the housing data
-  data_frame = pandas.read_csv("../data/california_housing_1990.csv")
+  data_frame = pandas.read_csv("code/HousePrices/data/california_housing_1990.csv")
 
   # show details of and clean up the data
   data_frame = analysis(data_frame)

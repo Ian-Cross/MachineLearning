@@ -1,5 +1,5 @@
 DATA_FOLDER=./dataSets/
-PROJECT_FOLDER=./code/
+PROJECT_FOLDER=code
 # Help pages
 page?=1
 test=5
@@ -14,20 +14,29 @@ menu: makefile
 	@echo "*** Menu ***"
 	@sed -n 's/^##//p' $<
 
-## Scales Documentation
+## ** Scales Documentation **
+## ` make scales `
+## 
+## 
+##
 .PHONY : scales
 scales:
-	python3 ./code/scales.py
+	@pipenv run python -m $(PROJECT_FOLDER).BalancedScales.scales
 
 ## ** Houses Documentation **
+## ` make houses `
 ## Based off of the California censous data of 1990, estimate the value of a house.
 ## Using a couple factors: Location (Long, Lat), age of a house, total rooms, total bedrooms, total population, etc.
 ##
 .PHONY : houses
 houses:
-	@pipenv run python $(PROJECT_FOLDER)HousePrices/src/housing.py
+	@pipenv run python -m $(PROJECT_FOLDER).HousePrices.src.housing
 
 ## ** Iris Documentation **
+## ` make iris `
+## Based off of the basic toy dataset of labeled iris flowers.
+## Using a couple factors: sepal length and width, and petal length and width.
+##
 .PHONY : iris
 iris:
 	@pipenv run python $(PROJECT_FOLDER)IrisClassification/iris.py
