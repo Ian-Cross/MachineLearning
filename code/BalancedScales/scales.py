@@ -1,10 +1,10 @@
 from code.Utilities.utils import csv_retrieve_dataset, get_input
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
 import matplotlib.pyplot as plot
 import pandas
-import os, sys
+import os, sys, json
 
 class BalancedScales():
   """
@@ -21,6 +21,8 @@ class BalancedScales():
 
   dataset = None
   model = None
+  data_columns = None
+  target_columns = None
 
   def __init__(self):
     """
@@ -38,6 +40,10 @@ class BalancedScales():
       print("Reading dataset")
       self.set_dataset(pandas.read_csv(self.TRAINING_DATA_PATH))
 
+    # isolate the data columns and target columns
+    self.set_data_columns(self.COLUMN_NAMES[1:])
+    self.set_target_columns(self.COLUMN_NAMES[:1])
+
   def set_dataset(self,dataset):
     """ Class variable setter """
     self.dataset = dataset
@@ -49,6 +55,14 @@ class BalancedScales():
   def set_accuracy(self,accuracy):
     """ Class variable setter """
     self.accuracy = accuracy
+
+  def set_data_columns(self, columns):
+    """ Class variable setter """
+    self.data_columns = columns
+
+  def set_target_columns(self, columns):
+    """ Class variable setter """
+    self.target_columns = columns
 
   def load_dataset(self):
     """ Retrieve the data from an external URL"""
@@ -66,13 +80,13 @@ class BalancedScales():
     pandas.plotting.scatter_matrix(self.dataset)
     plot.show()
 
-  def split_data(self, additional_features = None):
+  def split_data(self):
     """
       Convert the raw dataset into a training and testing set to be used by the model
     """
     # add on some additional column headers here if they are included by the feature engineering process
-    data_columns = self.COLUMN_NAMES[1:] if additional_features is None else self.COLUMN_NAMES[1:] + additional_features
-    target_columns = self.COLUMN_NAMES[:1]
+    data_columns = self.data_columns
+    target_columns = self.target_columns
 
     X = self.dataset[data_columns]
     y = self.dataset[target_columns]
@@ -93,9 +107,9 @@ class BalancedScales():
     if with_analysis:
       self.analysis()
 
-    return ['left_cross','right_cross','left_right_ratio']
+    self.set_data_columns(self.data_columns + ['left_cross','right_cross','left_right_ratio'])
 
-  def train_model(self, with_analysis):
+  def train_model(self, with_analysis, hyperparameters = False):
     """
       Split the dataset,
       create a Random forest classifier model,
@@ -104,12 +118,21 @@ class BalancedScales():
     """
     print("Training Model")
 
-    new_features = self.feature_engineering(with_analysis)
+    self.feature_engineering(with_analysis)
 
-    X_train, X_test, y_train, y_test = self.split_data(additional_features = new_features)
+    X_train, X_test, y_train, y_test = self.split_data()
 
     # Create and fit the model
     forest = RandomForestClassifier()
+
+    if (hyperparameters):
+      params = {
+        "n_estimators": [100, 300, 500],
+        "max_depth": [5,8,15],
+        "min_samples_leaf" : [1, 2, 4]
+      }
+      forest = GridSearchCV(forest, param_grid=params, cv=5 )
+
     forest.fit(X_train, y_train.values.ravel())
     
     # Test the results
@@ -119,11 +142,23 @@ class BalancedScales():
     self.set_model(forest)
     self.set_accuracy(accuracy)
 
+  def model_analysis(self, hyperparameters = False):
+    if (not hyperparameters):
+      features_dict = {}
+      for index in range(len(self.model.feature_importances_)):
+        features_dict[self.data_columns[index]] = self.model.feature_importances_[index]
+      print("Feature importance")
+      print(json.dumps(sorted(features_dict.items(), key=lambda x:x[1], reverse=True),indent=4))
+    else:
+      print(self.model.best_params_)
+      print(self.model.best_score_)
+
   def test_model(self,test_data = None):
     if test_data is None:
       print()
       print("Welcome to the balancing scale model")
       print("Now that the model is trained, enter in some values to get its prediction")
+      
       test_data = []
       test_data.append(get_input("Left Weight: ",int))
       test_data.append(get_input("Left Distance: ",int))
@@ -132,7 +167,7 @@ class BalancedScales():
       test_data.append(test_data[0] * test_data[1])
       test_data.append(test_data[2] * test_data[3])
       test_data.append(test_data[4]/test_data[5])
-      print (test_data)
+
       print("[Balanced, Left Skewed, Right Skewed] liklihood probabilities")
       print(self.model.predict_proba([test_data]))
       print("Did it get it right? If not, that's why the accuracy is " + str(self.accuracy))
@@ -147,7 +182,8 @@ class BalancedScales():
 
 if __name__ == "__main__":
     balanced_scales = BalancedScales()
-    # balanced_scales.analysis()
-    balanced_scales.train_model(with_analysis = False)
+    # balanced_scales.dataset_analysis()
+    balanced_scales.train_model(with_analysis = False, hyperparameters=True)
+    balanced_scales.model_analysis(hyperparameters=True)
     balanced_scales.test_model()
     
