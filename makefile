@@ -40,3 +40,6 @@ houses:
 .PHONY : iris
 iris:
 	@pipenv run python $(PROJECT_FOLDER)IrisClassification/iris.py
+
+binary-movie-reviews:
+	@pipenv run python -m $(PROJECT_FOLDER).MovieReviews.BinaryClassifications.sentament
